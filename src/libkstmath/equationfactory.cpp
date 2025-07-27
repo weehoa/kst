@@ -89,7 +89,7 @@ DataObjectPtr EquationFactory::generateObject(ObjectStore *store, QXmlStreamRead
   equation->registerChange();
   equation->unlock();
 
-  return equation;
+  return static_cast<DataObjectPtr>(equation);
 }
 
 }

@@ -27,7 +27,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QThread>
-#include <QtConcurrentRun>
+#include <QTConcurrent/QtConcurrentRun>
 #include <QFutureSynchronizer>
 #include <QLabel>
 #include <QApplication>

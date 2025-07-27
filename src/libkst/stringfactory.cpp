@@ -78,7 +78,7 @@ PrimitivePtr StringFactory::generatePrimitive(ObjectStore *store, QXmlStreamRead
 
   string->registerChange();
 
-  return string;
+  return static_cast<PrimitivePtr>(string);
 }
 
 DataStringFactory::DataStringFactory()

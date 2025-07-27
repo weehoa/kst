@@ -95,7 +95,7 @@ DataObjectPtr HistogramFactory::generateObject(ObjectStore *store, QXmlStreamRea
   histogram->registerChange();
   histogram->unlock();
 
-  return histogram;
+  return static_cast<DataObjectPtr>(histogram);
 }
 
 }

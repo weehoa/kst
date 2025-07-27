@@ -46,7 +46,7 @@ static QString FormattedNumber(double val, QString format_in) {
   if (format_in.startsWith('T')) {
     time_t time = val;
     struct tm timestruct;
-    gmtime_r(&time, &timestruct);
+    gmtime_s(&timestruct, &time);
     strftime(cstring, strlen, format.data()+1, &timestruct);
   } else {
     snprintf(cstring, strlen, format.data(), val); // not using QString::asprintf() because it isn't in qt4.

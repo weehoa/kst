@@ -1,5 +1,3 @@
-
-
 kst_init_plugin(src/datasources datasource)
 
 if(MSVC OR MINGW)
@@ -32,7 +30,7 @@ endif()
 if(cfitsio)
 	include_directories(${CFITSIO_INCLUDE_DIR})
 	kst_add_plugin(. fitsimage)
-  #kst_add_plugin(. fitstable)
+	#kst_add_plugin(. fitstable)
 	#kst_add_plugin(. healpix)
 	kst_link(${CFITSIO_LIBRARIES})
 endif()
@@ -49,6 +47,14 @@ if(netcdf)
 	include_directories(${NETCDF_INCLUDE_DIR})
 	kst_add_plugin(. netcdf)
 	kst_link(${NETCDF_LIBRARIES})
+
+	# Add debug flags only for the netcdf plugin target
+	#if(MSVC)
+	#	target_compile_options(${kst_name} PRIVATE /Zi /Od)
+	#	set_target_properties(${kst_name} PROPERTIES LINK_FLAGS "/DEBUG")
+	#else()
+	#	target_compile_options(${kst_name} PRIVATE -g -O0)
+	#endif()
 endif()
 	
 #if(planckIDEF)

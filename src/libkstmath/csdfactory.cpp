@@ -108,7 +108,7 @@ DataObjectPtr CSDFactory::generateObject(ObjectStore *store, QXmlStreamReader& x
   csd->registerChange();
   csd->unlock();
 
-  return csd;
+  return static_cast<DataObjectPtr>(csd);
 }
 
 }

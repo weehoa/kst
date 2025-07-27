@@ -103,7 +103,7 @@ DataObjectPtr PSDFactory::generateObject(ObjectStore *store, QXmlStreamReader& x
   powerspectrum->registerChange();
   powerspectrum->unlock();
 
-  return powerspectrum;
+  return static_cast<DataObjectPtr>(powerspectrum);
 }
 
 }

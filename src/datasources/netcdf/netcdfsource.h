@@ -22,9 +22,8 @@
 #include "datasource.h"
 #include "dataplugin.h"
 
-#include <netcdf.h>
-#include <netcdfcpp.h>
-
+#include <netcdf>
+#include <memory>
 
 class DataInterfaceNetCdfScalar;
 class DataInterfaceNetCdfString;
@@ -41,11 +40,9 @@ class NetcdfSource : public Kst::DataSource {
 
     Kst::Object::UpdateType internalDataSourceUpdate();
 
-
     virtual const QString& typeString() const;
 
     static const QString netcdfTypeKey();
-
 
     int readScalar(double *v, const QString& field);
 
@@ -61,29 +58,33 @@ class NetcdfSource : public Kst::DataSource {
 
     QString fileType() const;
 
-    //void save(QTextStream &ts, const QString& indent = QString());
-
     bool isEmpty() const;
 
-    void  reset();
+    void reset();
 
   private:
     QMap<QString, int> _frameCounts;
 
-    int _maxFrameCount;
-    NcFile *_ncfile;
-
-    // we must hold an NcError to overwrite the exit-on-error behaviour of netCDF
-    NcError _ncErr;
+    std::unique_ptr<netCDF::NcFile> _ncfile; // Updated to use netCDF4 C++ library
 
     QMap<QString, QString> _strings;
 
-    // TODO remove friend
     QStringList _scalarList;
     QStringList _fieldList;
     QStringList _matrixList;
-    //QStringList _stringList;
 
+    QMap<QString, int> _groupMaxFrameCount;
+    QMap<QString, netCDF::NcVar> _varMap;
+
+    void traverseGroups(const netCDF::NcGroup& group, const QString& path);
+    void traverseAndCacheVars(const netCDF::NcGroup& group, const QString& path);
+    void traverseAndUpdateGroups(const netCDF::NcGroup& group, const QString& path, bool& updated);
+    netCDF::NcVar getVarByFullPath(const QString& fullPath) const;
+
+    static bool isIndexField(const QString& field);
+    static QString groupPathForIndexField(const QString& field);
+    static bool isNumeric(netCDF::NcType::ncType type);
+    static bool isNumericInt(netCDF::NcType::ncType type);
 
     friend class DataInterfaceNetCdfScalar;
     friend class DataInterfaceNetCdfString;
@@ -94,8 +95,6 @@ class NetcdfSource : public Kst::DataSource {
     DataInterfaceNetCdfVector* iv;
     DataInterfaceNetCdfMatrix* im;
 };
-
-
 
 #endif
 

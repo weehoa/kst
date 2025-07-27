@@ -79,7 +79,7 @@ PrimitivePtr ScalarFactory::generatePrimitive(ObjectStore *store, QXmlStreamRead
   scalar->setEditable(editable);
   scalar->setDescriptiveName(descriptiveName);
 
-  return scalar;
+  return static_cast<PrimitivePtr>(scalar);
 }
 
 ////////////////////////////////////////
@@ -151,7 +151,7 @@ PrimitivePtr DataScalarFactory::generatePrimitive(ObjectStore *store, QXmlStream
   scalar->registerChange();
   scalar->unlock();
 
-  return scalar;
+  return static_cast<PrimitivePtr>(scalar);
 }
 
 ////////////////////////////////////////
@@ -225,7 +225,7 @@ PrimitivePtr VScalarFactory::generatePrimitive(ObjectStore *store, QXmlStreamRea
   scalar->registerChange();
   scalar->unlock();
 
-  return scalar;
+  return static_cast<PrimitivePtr>(scalar);
 }
 
 }

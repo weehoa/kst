@@ -86,7 +86,7 @@ DataObjectPtr EventMonitorFactory::generateObject(ObjectStore *store, QXmlStream
   eventMonitor->registerChange();
   eventMonitor->unlock();
 
-  return eventMonitor;
+  return static_cast<DataObjectPtr>(eventMonitor);
 }
 
 }

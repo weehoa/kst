@@ -203,7 +203,7 @@ RelationPtr CurveFactory::generateRelation(ObjectStore *store, QXmlStreamReader&
   curve->registerChange();
   curve->unlock();
 
-  return curve;
+  return static_cast<RelationPtr>(curve);
 }
 
 }

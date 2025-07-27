@@ -16,10 +16,10 @@
 # copied from findnetcdf.cmake
 if(NOT HDF5_INCLUDEDIR)
 
-  if(NOT kst_cross)
-    include(FindPkgConfig)
-    pkg_check_modules(HDF5 QUIET hdf5)
-  endif()
+  #if(NOT kst_cross)
+  #  include(FindPkgConfig)
+  #  pkg_check_modules(HDF5 QUIET hdf5)
+  #endif()
 
   if(HDF5_INCLUDEDIR AND HDF5_LIBRARIES)
     FIND_LIBRARY(HDF5_LIBRARY_CPP hdf5_c++
@@ -46,9 +46,9 @@ if(NOT HDF5_INCLUDEDIR)
     endmacro()
 
     find_hdf5_lib(hdf5_c         hdf5)
-    find_hdf5_lib(hdf5_c_debug   hdf5d)
-    find_hdf5_lib(hdf5_cpp       hdf5_c++)
-    find_hdf5_lib(hdf5_cpp_debug hdf5_c++d)
+    find_hdf5_lib(hdf5_c_debug   hdf5_D)
+    find_hdf5_lib(hdf5_cpp       hdf5_cpp)
+    find_hdf5_lib(hdf5_cpp_debug hdf5_cpp_D)
 
     if (hdf5_cpp STREQUAL "hdf5_cpp-NOTFOUND")
       find_hdf5_lib(hdf5_cpp       hdf5_cpp)
@@ -69,9 +69,9 @@ if(NOT HDF5_INCLUDEDIR)
   endif()
 endif()
 
-  #message(STATUS "HDF5: ${HDF5_INCLUDEDIR}")
-  #message(STATUS "HDF5: ${HDF5_LIBRARY_C}")
-  #message(STATUS "HDF5: ${HDF5_LIBRARY_CPP}")
+  message(STATUS "HDF5: ${HDF5_INCLUDEDIR}")
+  message(STATUS "HDF5: ${HDF5_LIBRARY_C}")
+  message(STATUS "HDF5: ${HDF5_LIBRARY_CPP}")
   IF(HDF5_INCLUDEDIR AND HDF5_LIBRARY_C AND HDF5_LIBRARY_CPP)
     SET(HDF5_LIBRARIES ${HDF5_LIBRARY_CPP} ${HDF5_LIBRARY_C})
     SET(HDF5_INCLUDE_DIR ${HDF5_INCLUDEDIR})

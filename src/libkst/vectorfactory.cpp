@@ -85,7 +85,7 @@ PrimitivePtr VectorFactory::generatePrimitive(ObjectStore *store, QXmlStreamRead
   vector->registerChange();
   vector->unlock();
 
-  return vector;
+  return static_cast<PrimitivePtr>(vector);
 }
 
 
@@ -148,7 +148,7 @@ PrimitivePtr GeneratedVectorFactory::generatePrimitive(ObjectStore *store, QXmlS
   vector->registerChange();
   vector->unlock();
 
-  return vector;
+  return static_cast<PrimitivePtr>(vector);
 }
 
 EditableVectorFactory::EditableVectorFactory()
@@ -211,7 +211,7 @@ PrimitivePtr EditableVectorFactory::generatePrimitive(ObjectStore *store, QXmlSt
   vector->registerChange();
   vector->unlock();
 
-  return vector;
+  return static_cast<PrimitivePtr>(vector);
 }
 
 
@@ -319,7 +319,7 @@ PrimitivePtr DataVectorFactory::generatePrimitive(ObjectStore *store, QXmlStream
   vector->registerChange();
   vector->unlock();
 
-  return vector;
+  return static_cast<PrimitivePtr>(vector);
 }
 
 }

@@ -144,7 +144,7 @@ DataObjectPtr BasicPluginFactory::generateObject(ObjectStore *store, QXmlStreamR
   dataObject->registerChange();
   dataObject->unlock();
 
-  return dataObject;
+  return static_cast<DataObjectPtr>(dataObject);
 }
 
 }

@@ -86,7 +86,7 @@ PrimitivePtr GeneratedMatrixFactory::generatePrimitive(ObjectStore *store, QXmlS
   matrix->registerChange();
   matrix->unlock();
 
-  return matrix;
+  return static_cast<PrimitivePtr>(matrix);
 }
 
 
@@ -155,7 +155,7 @@ PrimitivePtr EditableMatrixFactory::generatePrimitive(ObjectStore *store, QXmlSt
   matrix->registerChange();
   matrix->unlock();
 
-  return matrix;
+  return static_cast<PrimitivePtr>(matrix);
 }
 
 
@@ -246,7 +246,7 @@ PrimitivePtr DataMatrixFactory::generatePrimitive(ObjectStore *store, QXmlStream
   matrix->registerChange();
   matrix->unlock();
 
-  return matrix;
+  return static_cast<PrimitivePtr>(matrix);
 }
 
 

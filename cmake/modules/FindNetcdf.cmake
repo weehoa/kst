@@ -15,10 +15,10 @@
 
 if(NOT NETCDF_INCLUDEDIR)
 
-if(NOT kst_cross)
+#if(NOT kst_cross)
 	include(FindPkgConfig)
-  pkg_check_modules(NETCDF QUIET netcdf)
-endif()
+#  pkg_check_modules(NETCDF QUIET netcdf)
+#endif()
 
 if(NETCDF_INCLUDEDIR AND NETCDF_LIBRARIES)
 	FIND_LIBRARY(NETCDF_LIBRARY_CPP netcdf_c++ 
@@ -37,20 +37,40 @@ else()
 		)
 		
 	macro(find_netcdf_lib var libname)
-		FIND_LIBRARY(${var} ${libname} 
+		if(DEFINED CMAKE_TOOLCHAIN_FILE AND CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg")
+			# Use vcpkg environment variable if available
+			if(DEFINED ENV{VCPKG_ROOT})
+				set(_vcpkg_root "$ENV{VCPKG_ROOT}")
+			elseif(DEFINED VCPKG_ROOT)
+				set(_vcpkg_root "${VCPKG_ROOT}")
+			endif()
+			if(_vcpkg_root)
+				if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+					set(_vcpkg_lib_path "${_vcpkg_root}/installed/x64-windows/debug/lib")
+				else()
+					set(_vcpkg_lib_path "${_vcpkg_root}/installed/x64-windows/lib")
+				endif()
+			endif()
+		endif()
+		FIND_LIBRARY(${var} ${libname}
 			HINTS
-			ENV NETCDF_DIR
+				ENV NETCDF_DIR
 			PATH_SUFFIXES lib
-			PATHS ${kst_3rdparty_dir})
+			PATHS
+				${kst_3rdparty_dir}
+				${_vcpkg_lib_path}
+		)
 	endmacro()
 	
 	find_netcdf_lib(netcdf_c         netcdf)
-	find_netcdf_lib(netcdf_c_debug   netcdfd)
-	find_netcdf_lib(netcdf_cpp       netcdf_c++)
-	find_netcdf_lib(netcdf_cpp_debug netcdf_c++d)
+	find_netcdf_lib(netcdf_c_debug   netcdf)
+	find_netcdf_lib(netcdf_cpp       netcdf-cxx4)
+	find_netcdf_lib(netcdf_cpp_debug netcdf-cxx4)
 	
 	if(netcdf_c AND netcdf_c_debug)
 		set(NETCDF_LIBRARY_C optimized ${netcdf_c} debug ${netcdf_c_debug} CACHE STRING "" FORCE)
+	elseif(netcdf_c)
+		set(NETCDF_LIBRARY_C ${netcdf_c} CACHE STRING "" FORCE)
 	endif()
 	if(netcdf_cpp AND netcdf_cpp_debug)
 	   set(NETCDF_LIBRARY_CPP optimized ${netcdf_cpp} debug ${netcdf_cpp_debug} CACHE STRING "" FORCE)
@@ -64,9 +84,9 @@ else()
 endif()
 endif()
 
-#message(STATUS "NETCDF: ${NETCDF_INCLUDEDIR}")
-#message(STATUS "NETCDF: ${NETCDF_LIBRARY_C}")
-#message(STATUS "NETCDF: ${NETCDF_LIBRARY_CPP}")
+message(STATUS "NETCDF: ${NETCDF_INCLUDEDIR}")
+message(STATUS "NETCDF: ${NETCDF_LIBRARY_C}")
+message(STATUS "NETCDF: ${NETCDF_LIBRARY_CPP}")
 IF(NETCDF_INCLUDEDIR AND NETCDF_LIBRARY_C AND NETCDF_LIBRARY_CPP)
 	SET(NETCDF_LIBRARIES ${NETCDF_LIBRARY_CPP} ${NETCDF_LIBRARY_C})
 	SET(NETCDF_INCLUDE_DIR ${NETCDF_INCLUDEDIR})

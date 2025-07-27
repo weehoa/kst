@@ -121,7 +121,7 @@ RelationPtr ImageFactory::generateRelation(ObjectStore *store, QXmlStreamReader&
   image->registerChange();
   image->unlock();
 
-  return image;
+  return static_cast<RelationPtr>(image);
 }
 
 }
